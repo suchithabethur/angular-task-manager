@@ -1,0 +1,74 @@
+<div class="container">
+  <h1>📋 Task Manager</h1>
+  <button class="logout-btn" (click)="logout()"> Logout </button>
+
+  <!-- Your input, buttons, and task list go here -->
+
+
+<div class="input-group">
+  <input
+    type="text"
+    [(ngModel)]="newTask"
+    placeholder="Enter a task"
+    (keyup.enter)="addTask()"
+    [disabled]="isLoading"
+  />
+ <button
+  (click)="addTask()"
+  [disabled]="isLoading || !newTask.trim()">
+  {{ isLoading ? 'Adding...' : 'Add Task' }}
+</button>
+</div>
+
+<ul>
+  @for (task of tasks; track task.id) {
+    <li class="task-item" [class.deleting]="deletingTaskId === task.id">
+      @if (editingTask?.id === task.id) {
+        <div class="edit-container">
+          <input
+            type="text"
+            [(ngModel)]="editingTask.title"
+            (keyup.enter)="saveEdit()"
+            (keyup.escape)="cancelEdit()"
+            class="edit-input"
+            [disabled]="isLoading"
+          />
+          <button (click)="saveEdit()" [disabled]="isLoading || !editingTask?.title?.trim()">
+            Save
+          </button>
+          <button (click)="cancelEdit()" [disabled]="isLoading">
+            Cancel
+          </button>
+        </div>
+      } @else {
+        <span class="task-title">{{ task.title }}</span>
+        <div class="task-actions">
+          <button 
+            (click)="startEdit(task)" 
+            [disabled]="isLoading || deletingTaskId === task.id"
+            class="edit-btn"
+          >
+            Edit
+          </button>
+          <button 
+            (click)="deleteTask(task.id)" 
+            [disabled]="isLoading || deletingTaskId === task.id"
+            class="delete-btn"
+          >
+            @if (deletingTaskId === task.id) {
+              Deleting...
+            } @else {
+              Delete
+            }
+          </button>
+        </div>
+      }
+    </li>
+  }
+</ul>
+
+@if (isLoading && !deletingTaskId) {
+  <div class="loading-indicator">Processing...</div>
+}
+
+</div>

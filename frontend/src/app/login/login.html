@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>🔐 Login</h2>
+
+    @if (errorMessage) {
+      <p class="error-message">
+        {{ errorMessage }}
+      </p>
+    }
+
+    <input
+      type="email"
+      [(ngModel)]="email"
+      placeholder="Enter Email"
+    />
+
+    <div class="password-container">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        [(ngModel)]="password"
+        placeholder="Enter Password"
+      />
+      <span class="eye-icon" (click)="togglePassword()">👁️</span>
+    </div>
+
+    <button (click)="login()">Login</button>
+  </div>
+</div>
